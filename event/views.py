@@ -1,0 +1,52 @@
+from django.shortcuts import render
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import APIView
+
+from .models import Event, EventType
+from .serializers import EventSerializer, EventTypeSerializer
+
+class EventList(APIView):
+    def get(self, request, format=None):
+        events = Event.objects.all()
+        datas = []
+        for x in events:
+            data = {
+                'id' : x.id,
+                'text' : x.text,
+                'eventtype' : x.eventtype.name,
+                'created_at' : x.created_at.ctime(),
+            }
+            datas.append(data)
+
+        return Response(datas)
+    
+    def post(self, request, format=None):
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class EventTypeList(APIView):
+    def get(self, request, format=None):
+        eventtypes = EventType.objects.all()
+        datas = []
+        for x in eventtypes:
+            data = {
+                'id' : x.id,
+                'name' : x.name,
+            }
+            datas.append(data)
+
+        return Response(datas)
+    
+    def post(self, request, format=None):
+        serializer = EventTypeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        
+        return Response(status=status.HTTP_400_BAD_REQUEST)

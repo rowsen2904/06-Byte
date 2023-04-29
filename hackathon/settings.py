@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
-    'notification',
+    'user',
     'event',
+    'notification',
 ]
 
 

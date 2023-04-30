@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_one_v1/constants/colors.dart';
+import 'package:new_one_v1/data/main_data.dart';
+import 'package:new_one_v1/futures/auth/futures.dart';
+import 'package:new_one_v1/main.dart';
+import 'package:new_one_v1/models/user_model.dart';
 import 'package:new_one_v1/view/screens/log_in.dart';
 import 'package:new_one_v1/view/screens/sing_up.dart';
 
@@ -14,6 +18,8 @@ class DoAuthButton extends StatelessWidget {
   });
   final bool forLogin;
   final bool onTop;
+  static final futures = getIt<AuthFutures>(instanceName: 'futures');
+  static final mainData = getIt<MainData>(instanceName: 'futures');
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,6 +43,11 @@ class DoAuthButton extends StatelessWidget {
                 ));
                 return;
               }
+              if (forLogin) {
+                return;
+              }
+              // final user = UserModel(firstName: , id: id, lastName: lastName, password: password, userName: userName)
+              futures.singUp();
             },
             child: Container(
               width: 300.w,

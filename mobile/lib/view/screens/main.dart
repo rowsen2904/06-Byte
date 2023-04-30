@@ -38,6 +38,8 @@ class _MainScreenState extends State<MainScreen> {
     getIt.registerSingleton<MainData>(mainData, instanceName: 'mainData');
     getIt.registerSingleton<AuthFutures>(futures..init(),
         instanceName: 'futures');
+    mainData.getPermission();
+    futures.eventsListener();
   }
 
   Future? future;
@@ -56,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           );
         }
-        return snap.data ? const HomeScreen() : const LogInScreen();
+        return !snap.data ? const HomeScreen() : const LogInScreen();
       },
     );
   }

@@ -2,16 +2,20 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_one_v1/configs/my_scroll_behavior.dart';
 import 'package:get_it/get_it.dart';
-import 'package:location/location.dart';
+import 'package:new_one_v1/configs/notification_config.dart';
+import 'package:new_one_v1/constants/colors.dart';
+import 'package:new_one_v1/constants/names.dart';
 import 'package:new_one_v1/view/screens/main.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
 void main() {
+  MyNotification.initNotifications();
   runApp(const MyApp());
 }
 
@@ -45,27 +49,40 @@ class _TestScreenState extends State<TestScreen> {
   @override
   void initState() {
     super.initState();
-    socket = WebSocket(Uri.parse('ws://10.20.110.118:7777/ws/notification/'));
-    some();
+    // socket = WebSocket(Uri.parse('ws://10.20.110.118:7777/ws/notification/'));
+    // some();
   }
 
   WebSocket? socket;
-  void some() {
-    log(socket!.connection.state.toString());
-    socket!.messages.listen(
-      (event) {
-        log('message');
-        log(event);
-      },
-      onDone: () {
-        log('done');
-      },
+  void suu() {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 10,
+        channelKey: 'basic_channel',
+        title: 'Simple Notification',
+        body: 'Simple body',
+        actionType: ActionType.SilentAction,
+      ),
     );
   }
+
+  // void some() {
+  //   log(socket!.connection.state.toString());
+  //   socket!.messages.listen(
+  //     (event) {
+  //       log('message');
+  //       log(event);
+  //     },
+  //     onDone: () {
+  //       log('done');
+  //     },
+  //   );
+  // }
 
   String textik = 'nothing yet';
   // final dio = Dio();
   int index = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,15 +92,7 @@ class _TestScreenState extends State<TestScreen> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                // textik = DateTime.now().toString();
-                setState(() {});
-                socket!.send(
-                  jsonEncode({'some': 'soe'}),
-                );
-
-                // socket!.close();
-                // listen();
-                // some();
+                MyNotification.showNotification('title', ' body');
               },
               child: Text(
                 textik,

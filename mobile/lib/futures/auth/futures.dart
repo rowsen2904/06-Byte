@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
+import 'package:new_one_v1/configs/notification_config.dart';
 import 'package:new_one_v1/constants/urls.dart';
 import 'package:new_one_v1/data/main_data.dart';
 import 'package:new_one_v1/main.dart';
+import 'package:new_one_v1/models/news_model.dart';
 import 'package:new_one_v1/models/user_model.dart';
+import 'package:new_one_v1/view/screens/news.dart';
 
 class AuthFutures {
   final dio = Dio();
@@ -17,19 +20,47 @@ class AuthFutures {
     mainData = getIt<MainData>(instanceName: 'mainData');
   }
 
-  Future singUp(UserModel user) async {
+  List<NewsModel>? news;
+
+  Future<String> singUp() async {
+    log('singUp ing');
+    final firstName = mainData!.firstNameContrller.text;
+    final lastName = mainData!.lastNameContrller.text;
+    final passWord = mainData!.passwordController.text;
+    final passWord2 = mainData!.password2Contrller.text;
+    final userName = mainData!.userNameController.text;
+    if (firstName.isEmpty ||
+        lastName.isEmpty ||
+        passWord.isEmpty ||
+        userName.isEmpty) {
+      return 'fill in all fields';
+    }
+    if (passWord2 != passWord) {
+      return 'passwords do not match';
+    }
+    final user = UserModel(
+      firstName: firstName,
+      id: 2,
+      lastName: lastName,
+      password: passWord,
+      userName: userName,
+    );
     final model = UserModel.toMap(user);
-    model['password2'] = user.password;
+    model['password2'] = passWord2;
+    model.remove('id');
+    log(model.toString());
     final data = await dio.post('$mainUrl$singUpUrl',
-        data: UserModel.toMap(user),
+        data: model,
         options: Options(
             followRedirects: false,
             validateStatus: (status) {
               return status! < 500;
             }));
+    log(data.statusMessage.toString());
+    return '';
   }
 
-  Future getLocation() async {
+  Future<LocationData?> getLocation() async {
     final location = mainData!.location;
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
@@ -40,7 +71,7 @@ class AuthFutures {
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
-        return;
+        return null;
       }
     }
 
@@ -50,6 +81,25 @@ class AuthFutures {
         return value;
       },
     );
+    return _locationData;
+  }
+
+  Future getNews() async {
+    try {
+      final data = await dio.get('$mainUrl$newsUrl');
+      log(data.data.toString());
+      final newss = data.data;
+      news = List.generate(
+        newss.length,
+        (index) => NewsModel.fromMap(
+          newss[index],
+        ),
+      );
+      NewsScreen.notifier.value = !NewsScreen.notifier.value;
+    } catch (e) {
+      log(e.toString());
+      return [];
+    }
   }
 
   Future sentSos(BuildContext context) async {
@@ -125,7 +175,7 @@ class AuthFutures {
         );
       },
     );
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 3; i++) {
       await Future.delayed(const Duration(seconds: 1), () {
         seconds.value--;
       });
@@ -133,13 +183,58 @@ class AuthFutures {
     if (sent && pop) {
       Navigator.pop(context);
     }
-    // final location = await mainData!.location.getLocation();
-    // final model = {
-    //   'user_id': mainData!.theUser!.id,
-    //   'location': '${location.longitude},${location.latitude}',
-    //   'date': DateTime.now().toString(),
-    // };
+    // double.parse('source');
+    mainData!.bodyIndex.value = 1;
 
-    // final data = dio.post('path');
+    final location = await getLocation();
+    if (location != null) {
+      final model = {
+        'user': 7,
+        'location': '${location.latitude},${location.longitude}',
+        'created_at': DateTime.now().toString(),
+      };
+      mainData!.bodyIndex.value = 1;
+      try {
+        final data = await dio.post(
+          '$mainUrl$sosUrl',
+          data: model,
+          options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status! < 500;
+            },
+          ),
+        );
+        // log(data.data.toString());
+        log(data.statusMessage.toString());
+      } catch (e) {
+        log('$e');
+      }
+    }
+  }
+
+  Map lastEvent = {
+    'id': 9999,
+  };
+  Future eventsListener() async {
+    await Future.delayed(const Duration(seconds: 2));
+    log('event');
+    try {
+      final data = await dio.get('$mainUrl$eventsUrl');
+      log('${data.data} some');
+      if (lastEvent['id'] == data.data['id']) {
+        eventsListener();
+        return;
+      }
+      log('show');
+      MyNotification.showNotification(
+        data.data['event_type'],
+        data.data['text'],
+      );
+      lastEvent = data.data;
+    } catch (e) {
+      log(e.toString());
+    }
+    eventsListener();
   }
 }

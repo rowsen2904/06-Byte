@@ -7,12 +7,16 @@ class InstruckionsBuilder extends StatelessWidget {
 
   static final List<InstructionModel> models = [
     InstructionModel(
-      title: 'Tsunami',
+      title: 'Earthquake',
       imgPath: 'assets/images/tsunami.png',
       steps: [
-        'Узбагойтесь',
-        'Dont panic',
-        'one more relax',
+        "Drop to the ground, take cover under a sturdy table or desk, and hold on until the shaking stops.",
+        "Stay away from windows, outside doors, and walls.",
+        "If you are in bed, stay there and cover your head with a pillow.",
+        "If you are outdoors, stay in the open away from buildings, trees, and power lines.",
+        "If you are in a car, stop and stay in the car until the shaking stops.",
+        "After the shaking stops, check for injuries and damage.",
+        "Be prepared for aftershocks.",
       ],
     )
   ];

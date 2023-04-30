@@ -21,6 +21,7 @@ urlpatterns = [
 
     path('api/v1/', include('event.urls')),
     path('api/v1/', include('sos.urls')),
+    path('api/v1/', include('news.urls')),
 
     path('auth/', include('user.urls')),
 ]

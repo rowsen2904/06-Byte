@@ -41,10 +41,10 @@ class RegisterView(APIView):
 #             return Res
 
 
-{
- "username":"username",
- "password":"adminadmin",
- "password2":"adminadmin",
-"first_name" : "ROwsen",
-"last_name" : "Bayramov",
-}
+# {
+#  "username":"username",
+#  "password":"adminadmin",
+#  "password2":"adminadmin",
+# "first_name" : "ROwsen",
+# "last_name" : "Bayramov",
+# }

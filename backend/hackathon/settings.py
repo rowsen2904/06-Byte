@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     'rest_framework',
 
@@ -110,13 +111,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CHANNEL_LAYERS = {
-    'default' : {
-        'BACKEND' : 'channels_redis.core.RedisChannelLayer',
-        'CONFIG' : {
-            'hosts' : [{'redis', 6379}]
-        }
-    }
+CHANNELS_LAYERS = {
+  'default': {
+    'BACKEND': 'channels.layers.InMemoryChannelLayer'
+  }
 }
 
 

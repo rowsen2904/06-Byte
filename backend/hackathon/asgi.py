@@ -13,15 +13,17 @@ from channels.auth import AuthMiddlewareStack
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 
-import notification.routing
+from django.urls import re_path
+
+from notification import consumers
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hackathon.settings')
 
 application = ProtocolTypeRouter({
     'http' : get_asgi_application(),
     'websocket' : AuthMiddlewareStack(
-        URLRouter(
-            notification.routing.websocket_urlpatterns
-        )
+        URLRouter([
+            re_path(r'ws/notification/$', consumers.NotificationConsumer.as_asgi())
+        ])
     )
 })

@@ -18,7 +18,7 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 73.h,
+      height: 76.h,
       padding: EdgeInsets.symmetric(horizontal: 38.w),
       decoration: BoxDecoration(
         color: mainColor,

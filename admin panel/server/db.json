@@ -1,0 +1,53 @@
+{
+  "parent_categories": [
+    {
+      "id": 1,
+      "name_tm": "Fastfud",
+      "name_ru": "Фастфуд",
+      "name_en": "Fast Food",
+      "img": ""
+    },
+    {
+      "name_tm": "aa",
+      "name_ru": "sss",
+      "name_en": "dddda",
+      "img": "",
+      "id": 2
+    },
+    {
+      "name_tm": "das",
+      "name_ru": "aaa",
+      "name_en": "aaaa",
+      "img": "",
+      "id": 3
+    },
+    {
+      "name_tm": "asd",
+      "name_ru": "asd",
+      "name_en": "asd",
+      "img": "",
+      "id": 4
+    },
+    {
+      "name_tm": "qq",
+      "name_ru": "ww",
+      "name_en": "ee",
+      "img": "",
+      "id": 5
+    },
+    {
+      "name_tm": "qew",
+      "name_ru": "qwe",
+      "name_en": "qwe",
+      "img": "",
+      "id": 6
+    },
+    {
+      "name_tm": "asd",
+      "name_ru": "asd",
+      "name_en": "adsa",
+      "img": "",
+      "id": 7
+    }
+  ]
+}

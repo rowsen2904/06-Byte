@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -5,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_one_v1/configs/my_scroll_behavior.dart';
 import 'package:get_it/get_it.dart';
+import 'package:location/location.dart';
+import 'package:new_one_v1/view/screens/main.dart';
+import 'package:web_socket_client/web_socket_client.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +28,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) =>
             ScrollConfiguration(behavior: MyBehavior(), child: child!),
         debugShowCheckedModeBanner: false,
-        home: const TestScreen(),
+        home: const MainScreen(),
       ),
     );
   }
@@ -37,31 +42,30 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  final dio = Dio();
-  void listen() async {
-    final user = {
-      // 'username': 'luxx_',
-      'first_name': 'Rowsen',
-      'last_name': 'Meredow',
-      'password': '11111111',
-      'password2': '11111111',
-    };
-
-    final data = await dio.post(
-      '',
-      data: user,
-      options: Options(
-        followRedirects: false,
-        validateStatus: (status) {
-          return status! < 500;
-        },
-      ),
-    );
-    log('${data.data} datdaaa');
-    log('${data.statusCode} datdaaa');
-    log('${data.statusMessage} ressponse');
+  @override
+  void initState() {
+    super.initState();
+    socket = WebSocket(Uri.parse('ws://10.20.110.118:7777/ws/notification/'));
+    some();
   }
 
+  WebSocket? socket;
+  void some() {
+    log(socket!.connection.state.toString());
+    socket!.messages.listen(
+      (event) {
+        log('message');
+        log(event);
+      },
+      onDone: () {
+        log('done');
+      },
+    );
+  }
+
+  String textik = 'nothing yet';
+  // final dio = Dio();
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,11 +74,22 @@ class _TestScreenState extends State<TestScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                listen();
+              onPressed: () async {
+                // textik = DateTime.now().toString();
+                setState(() {});
+                socket!.send(
+                  jsonEncode({'some': 'soe'}),
+                );
+
+                // socket!.close();
+                // listen();
+                // some();
               },
               child: Text(
-                'soem',
+                textik,
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
               ),
             )
           ],

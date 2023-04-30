@@ -3,12 +3,15 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:new_one_v1/futures/auth/futures.dart';
+import 'package:new_one_v1/main.dart';
 
 class SOSButton extends StatelessWidget {
   const SOSButton({super.key});
   static const firstColor = Color.fromRGBO(226, 71, 71, 1);
   static const secondColros = Color.fromRGBO(226, 71, 71, 0.4);
   static const lastColor = Color.fromRGBO(226, 71, 71, 0.2);
+  static final futures = getIt<AuthFutures>(instanceName: 'futures');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +35,9 @@ class SOSButton extends StatelessWidget {
           child: Material(
             color: firstColor,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                futures.sentSos(context);
+              },
               child: Container(
                 height: 161.h,
                 width: 161.h,

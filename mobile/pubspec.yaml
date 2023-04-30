@@ -43,6 +43,8 @@ dependencies:
   web_socket_channel: ^2.4.0
   google_fonts: ^4.0.4
   shared_preferences: ^2.1.0
+  location: ^4.4.0
+  web_socket_client: ^0.1.0-dev.3
   # socket_io: ^1.0.1
 
 

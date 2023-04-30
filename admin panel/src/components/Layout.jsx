@@ -1,6 +1,6 @@
 import MySidebar from "./MySidebar/MySidebar.jsx";
 import {Outlet} from "react-router";
-import {faC, faEarth, faGauge, faGear, faM, faP} from "@fortawesome/free-solid-svg-icons";
+import {faC, faCircleExclamation, faEarth, faGauge, faGear, faM, faMountain, faNoteSticky, faP} from "@fortawesome/free-solid-svg-icons";
 import MyNavbar from "./MyNavbar/MyNavbar.jsx";
 import MyFooter from "./MyFooter/MyFooter.jsx";
 import {useTranslation} from "react-i18next";
@@ -20,6 +20,8 @@ const Layout = () => {
     const menuItems = [
         { id: 1, name: t("dashboard"), icon: faGauge , to: "/"},
         { id: 2, name: "Events Page", icon: faEarth , to: "/events"},
+        { id: 4, name: "Event Add", icon: faMountain , to: "/events_add"},
+        { id: 3, name: "SOS Map Page", icon: faCircleExclamation , to: "/sos_map"},
     ];
 
     return (

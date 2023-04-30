@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -15,7 +16,8 @@ class EventList(APIView):
             data = {
                 'id' : x.id,
                 'text' : x.text,
-                'eventtype' : x.eventtype.name,
+                'event_type' : x.event_type.name,
+                'location' : x.location,
                 'created_at' : x.created_at.ctime(),
             }
             datas.append(data)
@@ -29,6 +31,19 @@ class EventList(APIView):
             return Response(status=status.HTTP_201_CREATED)
         
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class EventDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Http404
+    
+    def get(self, request, pk, format=None):
+        event = self.get_object(pk=pk)
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
 
 class EventTypeList(APIView):
     def get(self, request, format=None):

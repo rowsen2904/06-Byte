@@ -7,4 +7,4 @@ class SosStatement(models.Model):
     created_at = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user)

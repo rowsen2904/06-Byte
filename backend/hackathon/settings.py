@@ -32,9 +32,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
-    'channels',
     'rest_framework',
+    'corsheaders',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,12 +44,15 @@ INSTALLED_APPS = [
 
     'user',
     'event',
-    'notification',
     'sos',
+    'news',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,7 +81,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hackathon.wsgi.application'
-ASGI_APPLICATION = 'hackathon.asgi.application'
 
 
 # Database

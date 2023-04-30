@@ -23,6 +23,4 @@ urlpatterns = [
     path('api/v1/', include('sos.urls')),
 
     path('auth/', include('user.urls')),
-
-    path('', include('notification.urls')),
 ]
